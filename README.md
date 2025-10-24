@@ -7,6 +7,7 @@ A powerful, browser-based HTML editor that allows users to import existing HTML 
 ![Main Editor Interface](./public/html-editor.png)
 ---
 
+## 🌍 View Live : [https://onesol-tech-assessment.vercel.app/]
 
 ## 🚀 Features
 
