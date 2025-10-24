@@ -4,7 +4,7 @@ import { useRef, useEffect, useState, useCallback } from 'react';
 import { Badge } from "./badge";
 import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
 import { ElementData } from '../../types';
-import { HTMLParser } from '../../lib/html-parser';
+// import { HTMLParser } from '../../lib/html-parser';
 import { Button } from './button';
 import { Card } from './card';
 

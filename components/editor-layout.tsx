@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { CanvasStage } from './ui/canvas-stage';
 import { useEditorState } from '../hooks/use-editor-state';
 import { ElementData } from '../types';
-import { HTMLParser } from '../lib/html-parser';
+// import { HTMLParser } from '../lib/html-parser';
 import { HTMLExporter } from '../lib/html-exporter';
 import { ElementFactory } from '../lib/element-factory';
 import { useKeyboardShortcuts } from '../hooks/use-keyboard-shortcuts';

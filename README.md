@@ -2,6 +2,13 @@
 
 A powerful, browser-based HTML editor that allows users to import existing HTML content and create interactive posters with drag-and-drop functionality. Built with Next.js, TypeScript, and Tailwind CSS.
 
+## 📸 Screenshots
+
+![Main Editor Interface](./public/html-editor.png)
+---
+
+## 🌐 View Live --> (https://onesol-tech-assessment.vercel.app)
+
 ## 🚀 Features
 
 - **HTML Import**: Load existing HTML files or paste HTML content directly
@@ -45,17 +52,46 @@ A powerful, browser-based HTML editor that allows users to import existing HTML 
 4. **Open your browser**
    Navigate to `http://localhost:3000`
 
-### Project Structure
+## 📁 Complete Project Structure
 
 ```
-├── app/
-│   └── page.tsx              # Main application entry point
-├── components/
-│   ├── html-editor.tsx       # Core editor component
-│   └── ui/                   # Reusable UI components
-├── lib/                      # Utility functions
-├── types/                    # TypeScript type definitions
-└── README.md
+editable-html-poster/
+├── 📁 app/
+│   ├── favicon.ico
+│   ├── globals.css              # Global styles and Tailwind imports
+│   ├── layout.tsx               # Root layout component
+│   └── page.tsx                 # Main application entry point
+├── 📁 components/
+│   ├── html-editor.tsx          # Core editor component (main functionality)
+│   ├── mode-toggle.tsx          # Dark/light theme toggle
+│   └── 📁 ui/                   # Reusable UI components
+│       ├── badge.tsx            # Badge component for status indicators
+│       ├── button.tsx           # Button component with variants
+│       ├── card.tsx             # Card container component
+│       ├── input.tsx            # Input field component
+│       ├── label.tsx            # Form label component
+│       └── textarea.tsx         # Multi-line text input component
+├── 📁 lib/
+│   └── utils.ts                 # Utility functions and helpers
+├── 📁 types/
+│   └── index.ts                 # TypeScript type definitions
+├── 📁 screenshots/              # Application screenshots for README
+│   ├── main-editor.png
+│   ├── property-editing.png
+│   └── import-export.png
+├── 📁 public/                   # Static assets
+│   ├── next.svg
+│   └── vercel.svg
+├── .eslintrc.json               # ESLint configuration
+├── .gitignore                   # Git ignore rules
+├── components.json              # shadcn/ui components configuration
+├── next.config.js               # Next.js configuration
+├── package.json                 # Dependencies and scripts
+├── package-lock.json            # Lockfile for exact dependency versions
+├── postcss.config.js            # PostCSS configuration for Tailwind
+├── README.md                    # Project documentation (this file)
+├── tailwind.config.ts           # Tailwind CSS configuration
+└── tsconfig.json                # TypeScript configuration
 ```
 
 ## 🏗️ Architecture & SOLID Design Principles
@@ -248,7 +284,6 @@ const updateElementProperty = (property: string, value: string) => {
 - **Language**: TypeScript for type safety
 - **Styling**: Tailwind CSS with custom components
 - **Icons**: Lucide React icon library
-- **Build Tool**: Turbopack for fast development
 
 ## 🤝 Contributing
 
