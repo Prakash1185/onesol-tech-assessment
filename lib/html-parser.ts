@@ -15,18 +15,20 @@ export function extractElementsFromHTML(html: string): ElementData[] {
   
   const traverse = (node: Element, index: number) => {
     if (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'HTML' && node.tagName !== 'HEAD' && node.tagName !== 'BODY') {
-      const computedStyle = window.getComputedStyle ? {} : {};
       const element: ElementData = {
         id: node.id || `element-${Date.now()}-${index}`,
         type: node.tagName.toLowerCase() === 'img' ? 'image' : 'text',
-        tagName: node.tagName.toLowerCase(),
-        content: node.textContent || '',
+        element: node as HTMLElement, // Add the actual DOM element
         position: {
           x: parseInt(getStyleValue(node, 'left')) || 0,
           y: parseInt(getStyleValue(node, 'top')) || 0
         },
-        styles: extractStyles(node),
-        attributes: extractAttributes(node)
+        properties: {
+          tagName: node.tagName.toLowerCase(),
+          content: node.textContent || '',
+          styles: extractStyles(node),
+          attributes: extractAttributes(node)
+        }
       };
       elements.push(element);
     }
@@ -35,6 +37,44 @@ export function extractElementsFromHTML(html: string): ElementData[] {
   };
   
   Array.from(doc.body.children).forEach((child, i) => traverse(child, i));
+  return elements;
+}
+
+export function extractElementsFromContainer(container: HTMLElement): ElementData[] {
+  const elements: ElementData[] = [];
+  const childElements = container.querySelectorAll('*');
+  
+  childElements.forEach((element, index) => {
+    const htmlElement = element as HTMLElement;
+    
+    const elementData: ElementData = {
+      id: htmlElement.id || `element-${Date.now()}-${index}`,
+      type: htmlElement.tagName.toLowerCase() === 'img' ? 'image' : 'text',
+      element: htmlElement,
+      position: {
+        x: parseInt(htmlElement.style.left) || 0,
+        y: parseInt(htmlElement.style.top) || 0
+      },
+      properties: {
+        tagName: htmlElement.tagName.toLowerCase(),
+        content: htmlElement.textContent || '',
+        src: htmlElement.tagName === 'IMG' ? (htmlElement as HTMLImageElement).src : '',
+        alt: htmlElement.tagName === 'IMG' ? (htmlElement as HTMLImageElement).alt : '',
+        styles: {
+          fontSize: htmlElement.style.fontSize,
+          color: htmlElement.style.color,
+          width: htmlElement.style.width,
+          height: htmlElement.style.height,
+          position: htmlElement.style.position,
+          left: htmlElement.style.left,
+          top: htmlElement.style.top
+        }
+      }
+    };
+    
+    elements.push(elementData);
+  });
+  
   return elements;
 }
 
@@ -70,21 +110,25 @@ function extractAttributes(element: Element): Record<string, string> {
 
 export function generateHTML(elements: ElementData[]): string {
   const elementsHTML = elements.map(el => {
-    const styleStr = Object.entries(el.styles)
+    const styles = el.properties?.styles || {};
+    const styleStr = Object.entries(styles)
       .map(([key, value]) => `${key}: ${value}`)
       .join('; ');
     
-    const attrsStr = Object.entries(el.attributes)
+    const attributes = el.properties?.attributes || {};
+    const attrsStr = Object.entries(attributes)
       .map(([key, value]) => `${key}="${value}"`)
       .join(' ');
     
     const style = styleStr ? `style="${styleStr}"` : '';
     const attrs = attrsStr ? attrsStr : '';
+    const tagName = el.properties?.tagName || 'div';
+    const content = el.properties?.content || '';
     
-    if (el.tagName === 'img') {
-      return `<${el.tagName} ${attrs} ${style} />`;
+    if (tagName === 'img') {
+      return `<${tagName} ${attrs} ${style} />`;
     } else {
-      return `<${el.tagName} ${attrs} ${style}>${el.content}</${el.tagName}>`;
+      return `<${tagName} ${attrs} ${style}>${content}</${tagName}>`;
     }
   }).join('\n');
 
@@ -106,4 +150,23 @@ export function generateHTML(elements: ElementData[]): string {
     </div>
 </body>
 </html>`;
+}
+
+// Legacy class-based interface for backward compatibility
+export class HTMLParser {
+  static sanitize(html: string): string {
+    return sanitizeHTML(html);
+  }
+  
+  static extractElements(container: HTMLElement): ElementData[] {
+    return extractElementsFromContainer(container);
+  }
+  
+  static extractElementsFromHTML(html: string): ElementData[] {
+    return extractElementsFromHTML(html);
+  }
+  
+  static generateHTML(elements: ElementData[]): string {
+    return generateHTML(elements);
+  }
 }

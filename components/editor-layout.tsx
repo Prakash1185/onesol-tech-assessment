@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { CanvasStage } from './ui/canvas-stage';
 import { useEditorState } from '../hooks/use-editor-state';
 import { ElementData } from '../types';
-// import { HTMLParser } from '../lib/html-parser';
+import { HTMLParser, sanitizeHTML } from '../lib/html-parser'; // Updated import
 import { HTMLExporter } from '../lib/html-exporter';
 import { ElementFactory } from '../lib/element-factory';
 import { useKeyboardShortcuts } from '../hooks/use-keyboard-shortcuts';
@@ -32,7 +32,7 @@ export function EditorLayout() {
 
   const handleImportHTML = useCallback((html: string) => {
     try {
-      const sanitizedHTML = HTMLParser.sanitize(html);
+      const sanitizedHTML = sanitizeHTML(html); // Use function import
       pushToHistory(content.html);
       
       setContent({

@@ -4,7 +4,7 @@ import { useRef, useEffect, useState, useCallback } from 'react';
 import { Badge } from "./badge";
 import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
 import { ElementData } from '../../types';
-// import { HTMLParser } from '../../lib/html-parser';
+import { HTMLParser, sanitizeHTML, extractElementsFromContainer } from '../../lib/html-parser'; // Updated import
 import { Button } from './button';
 import { Card } from './card';
 
@@ -33,11 +33,11 @@ export function CanvasStage({
   // Initialize content in stage
   useEffect(() => {
     if (stageRef.current && htmlContent) {
-      const sanitizedHTML = HTMLParser.sanitize(htmlContent);
+      const sanitizedHTML = sanitizeHTML(htmlContent); // Use function import
       stageRef.current.innerHTML = sanitizedHTML;
       
       // Extract and track elements
-      const extractedElements = HTMLParser.extractElements(stageRef.current);
+      const extractedElements = extractElementsFromContainer(stageRef.current); // Use function import
       setElements(extractedElements);
       
       // Add event listeners to all elements
@@ -150,7 +150,7 @@ export function CanvasStage({
           x: parseInt(element.style.left) || 0,
           y: parseInt(element.style.top) || 0
         },
-        properties: HTMLParser.extractElements(element.parentElement || document.body)
+        properties: extractElementsFromContainer(element.parentElement || document.body)
           .find(el => el.element === element)?.properties || {}
       };
       
