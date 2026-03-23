@@ -357,7 +357,7 @@ object-fit: cover; border-top-left-radius: 16px;
                 onClick={() => loadHTML(sampleHTML)}
               >
                 <FileText className="h-4 w-4 mr-2" />
-                Load Sample
+                Load Sample File
               </Button>
               <input
                 ref={fileInputRef}
